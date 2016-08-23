@@ -5,10 +5,7 @@ Angular 2 HMR Webpack Loader by @AngularClass
           test: /\.ts$/,
           loaders: [
             'awesome-typescript-loader',
-            '@angularclass/conventions-loader',
             '@angularclass/hmr-loader'
-          ],
-          exclude: [/\.(spec|e2e|d)\.ts$/],
-          include: [root('./src')]
+          ]
         },
 ```
