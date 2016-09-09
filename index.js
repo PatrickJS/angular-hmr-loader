@@ -19,7 +19,7 @@ function Angular2HMRLoader(source, sourcemap) {
   }
 
   if (query.prod) {
-    source = source.replace(bootLoader, function (match, boot, ngmodule, offset, src) {
+    source = source.replace(bootLoader, function (match, boot, ngmodule, main, offset, src) {
         // return updated metadata
         var newLine = ' ';
         if (query.pretty) {
@@ -27,9 +27,9 @@ function Angular2HMRLoader(source, sourcemap) {
         }
         return ';' +
         'if (document.readyState === "complete") {'+ newLine +
-         '  ' + ngmodule + '()' + newLine +
+         '  ' + main + '()' + newLine +
         '} else {'+ newLine +
-        '  document.addEventListener("DOMContentLoaded", function() { ' + ngmodule + '()' + ' });'+ newLine +
+        '  document.addEventListener("DOMContentLoaded", function() { ' + main + '()' + ' });'+ newLine +
         '}';
       });
     return done(source, sourcemap);
