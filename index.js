@@ -1,6 +1,7 @@
 var utils = require('loader-utils');
 
 var bootstrapModule = /(\.bootstrapModule|\.bootstrapModuleFactory)\((.+)\)/gm;
+var bootLoader = /(hmr_1\.bootloader)\((.+)\)/gm;
 
 function Angular2HMRLoader(source, sourcemap) {
   var self = this;
@@ -18,6 +19,19 @@ function Angular2HMRLoader(source, sourcemap) {
   }
 
   if (query.prod) {
+    source = source.replace(bootLoader, function (match, boot, ngmodule, offset, src) {
+        // return updated metadata
+        var newLine = ' ';
+        if (query.pretty) {
+          newLine = '\n';
+        }
+        return ';' +
+        'if (document.readyState === "complete") {'+ newLine +
+         '  ' + ngmodule + '()' + newLine +
+        '} else {'+ newLine +
+        '  document.addEventListener("DOMContentLoaded", function() { ' + ngmodule + '()' + ' });'+ newLine +
+        '}';
+      });
     return done(source, sourcemap);
   }
 
