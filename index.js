@@ -1,7 +1,7 @@
 var utils = require('loader-utils');
 
 var bootstrapModule = /(\.bootstrapModule|\.bootstrapModuleFactory)\((.+)\)/gm;
-var bootLoader = /(hmr_1\.bootloader)\((.+)\)/gm;
+var bootLoader = /((hmr_1|r)\.bootloader)\((.+)\)/gm;
 
 function Angular2HMRLoader(source, sourcemap) {
   var self = this;
