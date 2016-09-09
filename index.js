@@ -1,52 +1,69 @@
-var bootstrapModule = /(\.bootstrapModule)\((.+)\)/gm;
+var utils = require('loader-utils');
+
+var bootstrapModule = /(\.bootstrapModule|\.bootstrapModuleFactory)\((.+)\)/gm;
 
 function Angular2HMRLoader(source, sourcemap) {
   var self = this;
   // Not cacheable during unit tests;
   self.cacheable && self.cacheable();
+  var query = utils.parseQuery(self.query);
+
+  function done(src, srcmap) {
+    // Support for tests
+    if (self.callback) {
+      self.callback(null, src, srcmap);
+    } else {
+      return src;
+    }
+  }
+
+  if (query.prod) {
+    return done(source, sourcemap);
+  }
 
   source = source.replace(bootstrapModule, function (match, boot, ngmodule, offset, src) {
     // return updated metadata
+    var newLine = ' ';
+    if (query.pretty) {
+      newLine = '\n';
+    }
+
     return boot + '(' + ngmodule + ')' +
-    '.then(function(MODULE_REF) {' +
-      'if (module["hot"]) {\n'+
-        'module["hot"]["accept"]();\n'+
-        '\n'+
-        'if (MODULE_REF.instance["hmrOnInit"]) {\n'+
-          'MODULE_REF.instance["hmrOnInit"](module["hot"]["data"]);\n'+
-        '}\n'+
-        'if (MODULE_REF.instance["hmrOnStatus"]) {\n'+
-          'module["hot"]["apply"](function(status) {\n'+
-            'MODULE_REF.instance["hmrOnStatus"](status);\n'+
-          '});\n'+
-        '}\n'+
-        'if (MODULE_REF.instance["hmrOnCheck"]) {\n'+
-          'module["hot"]["check"](function(err, outdatedModules) {\n'+
-            'MODULE_REF.instance["hmrOnCheck"](err, outdatedModules);\n'+
-          '});\n'+
-        '}\n'+
-        'if (MODULE_REF.instance["hmrOnDecline"]) {\n'+
-          'module["hot"]["decline"](function(dependencies) {\n'+
-            'MODULE_REF.instance["hmrOnDecline"](dependencies);\n'+
-          '});\n'+
-        '}\n'+
-        'module["hot"]["dispose"](function(store) {\n'+
-          'MODULE_REF.instance["hmrOnDestroy"] && MODULE_REF.instance["hmrOnDestroy"](store);\n'+
-          'MODULE_REF.destroy();\n'+
-          'MODULE_REF.instance["hmrAfterDestroy"] && MODULE_REF.instance["hmrAfterDestroy"](store);\n'+
-       ' });\n'+
-      '}\n'+
-      'return MODULE_REF;\n'+
+    '.then(function(MODULE_REF) {'+ newLine +
+    '  if (module["hot"]) {'+ newLine +
+    '    module["hot"]["accept"]();'+ newLine +
+    '    '+ newLine +
+    '    if (MODULE_REF.instance["hmrOnInit"]) {'+ newLine +
+    '      MODULE_REF.instance["hmrOnInit"](module["hot"]["data"]);'+ newLine +
+    '    }'+ newLine +
+    '    if (MODULE_REF.instance["hmrOnStatus"]) {'+ newLine +
+    '      module["hot"]["apply"](function(status) {'+ newLine +
+    '        MODULE_REF.instance["hmrOnStatus"](status);'+ newLine +
+    '      });'+ newLine +
+    '    }'+ newLine +
+    '    if (MODULE_REF.instance["hmrOnCheck"]) {'+ newLine +
+    '      module["hot"]["check"](function(err, outdatedModules) {'+ newLine +
+    '        MODULE_REF.instance["hmrOnCheck"](err, outdatedModules);'+ newLine +
+    '      });'+ newLine +
+    '    }'+ newLine +
+    '    if (MODULE_REF.instance["hmrOnDecline"]) {'+ newLine +
+    '      module["hot"]["decline"](function(dependencies) {'+ newLine +
+    '        MODULE_REF.instance["hmrOnDecline"](dependencies);'+ newLine +
+    '      });'+ newLine +
+    '    }'+ newLine +
+    '    module["hot"]["dispose"](function(store) {'+ newLine +
+    '      MODULE_REF.instance["hmrOnDestroy"] && MODULE_REF.instance["hmrOnDestroy"](store);'+ newLine +
+    '      MODULE_REF.destroy();'+ newLine +
+    '      MODULE_REF.instance["hmrAfterDestroy"] && MODULE_REF.instance["hmrAfterDestroy"](store);'+ newLine +
+    '    });'+ newLine +
+    '  }'+ newLine +
+    '  return MODULE_REF;'+ newLine +
     '})'
   });
 
-  // Support for tests
-  if (self.callback) {
-    self.callback(null, source, sourcemap)
-  } else {
-    return source;
-  }
+  return done(source, sourcemap)
 };
+
 Angular2HMRLoader.default = Angular2HMRLoader;
 
 module.exports = Angular2HMRLoader
