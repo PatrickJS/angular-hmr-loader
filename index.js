@@ -48,7 +48,7 @@ function Angular2HMRLoader(source, sourcemap) {
     '    module["hot"]["accept"]();'+ newLine +
     '    '+ newLine +
     '    if (MODULE_REF.instance["hmrOnInit"]) {'+ newLine +
-    '      MODULE_REF.instance["hmrOnInit"](module["hot"]["data"]);'+ newLine +
+    '      module["hot"]["data"] && MODULE_REF.instance["hmrOnInit"](module["hot"]["data"]);'+ newLine +
     '    }'+ newLine +
     '    if (MODULE_REF.instance["hmrOnStatus"]) {'+ newLine +
     '      module["hot"]["apply"](function(status) {'+ newLine +
