@@ -21,16 +21,8 @@ function Angular2HMRLoader(source, sourcemap) {
   if (query.prod) {
     source = source.replace(bootLoader, function (match, boot, ngmodule, main, offset, src) {
         // return updated metadata
-        var newLine = ' ';
-        if (query.pretty) {
-          newLine = '\n';
-        }
-        return ';' +
-        'if (document.readyState === "complete") {'+ newLine +
-         '  ' + main + '()' + newLine +
-        '} else {'+ newLine +
-        '  document.addEventListener("DOMContentLoaded", function() { ' + main + '()' + ' });'+ newLine +
-        '}';
+        return '(document.readyState === "complete") ? ' + main +
+        '() : document.addEventListener("DOMContentLoaded", function() { ' + main + '()' + ' })';
       });
     return done(source, sourcemap);
   }
