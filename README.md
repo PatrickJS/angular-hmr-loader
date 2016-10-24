@@ -5,8 +5,8 @@ Please consider using https://github.com/AngularClass/angular2-hmr which provide
         {
           test: /\.ts$/,
           loaders: [
-            'awesome-typescript-loader',
-            '@angularclass/hmr-loader'
+            '@angularclass/hmr-loader',
+            'awesome-typescript-loader'
           ]
         },
 ```
