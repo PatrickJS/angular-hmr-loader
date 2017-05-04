@@ -35,7 +35,7 @@ function Angular2HMRLoader(source, sourcemap) {
     }
 
     return boot + '(' + ngmodule + ')' +
-    '.then(function(MODULE_REF: any) {'+ newLine +
+    '.then(function(MODULE_REF) {'+ newLine +
     '  if (module["hot"]) {'+ newLine +
     '    module["hot"]["accept"]();'+ newLine +
     '    '+ newLine +
@@ -43,21 +43,21 @@ function Angular2HMRLoader(source, sourcemap) {
     '      module["hot"]["data"] && MODULE_REF.instance["hmrOnInit"](module["hot"]["data"]);'+ newLine +
     '    }'+ newLine +
     '    if (MODULE_REF.instance["hmrOnStatus"]) {'+ newLine +
-    '      module["hot"]["apply"](function(status: any) {'+ newLine +
+    '      module["hot"]["apply"](function(status) {'+ newLine +
     '        MODULE_REF.instance["hmrOnStatus"](status);'+ newLine +
     '      });'+ newLine +
     '    }'+ newLine +
     '    if (MODULE_REF.instance["hmrOnCheck"]) {'+ newLine +
-    '      module["hot"]["check"](function(err: any, outdatedModules: any) {'+ newLine +
+    '      module["hot"]["check"](function(err, outdatedModules) {'+ newLine +
     '        MODULE_REF.instance["hmrOnCheck"](err, outdatedModules);'+ newLine +
     '      });'+ newLine +
     '    }'+ newLine +
     '    if (MODULE_REF.instance["hmrOnDecline"]) {'+ newLine +
-    '      module["hot"]["decline"](function(dependencies: any) {'+ newLine +
+    '      module["hot"]["decline"](function(dependencies) {'+ newLine +
     '        MODULE_REF.instance["hmrOnDecline"](dependencies);'+ newLine +
     '      });'+ newLine +
     '    }'+ newLine +
-    '    module["hot"]["dispose"](function(store: any) {'+ newLine +
+    '    module["hot"]["dispose"](function(store) {'+ newLine +
     '      MODULE_REF.instance["hmrOnDestroy"] && MODULE_REF.instance["hmrOnDestroy"](store);'+ newLine +
     '      MODULE_REF.destroy();'+ newLine +
     '      MODULE_REF.instance["hmrAfterDestroy"] && MODULE_REF.instance["hmrAfterDestroy"](store);'+ newLine +
