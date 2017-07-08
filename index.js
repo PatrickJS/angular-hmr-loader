@@ -7,7 +7,7 @@ function Angular2HMRLoader(source, sourcemap) {
   var self = this;
   // Not cacheable during unit tests;
   self.cacheable && self.cacheable();
-  var query = utils.parseQuery(self.query);
+  var query = utils.getOptions(self) || {};
 
   function done(src, srcmap) {
     // Support for tests
