@@ -21,7 +21,7 @@ function Angular2HMRLoader(source, sourcemap) {
   if (query.prod) {
     source = source.replace(bootLoader, function (match, boot, ngmodule, main, offset, src) {
         // return updated metadata
-        return '(document.readyState === "complete") ? ' + main +
+        return '(document.readyState === "complete" || document.readyState === "interactive") ? ' + main +
         '() : document.addEventListener("DOMContentLoaded", function() { ' + main + '()' + ' })';
       });
     return done(source, sourcemap);
@@ -70,6 +70,7 @@ function Angular2HMRLoader(source, sourcemap) {
   return done(source, sourcemap)
 };
 
+// Make sure it works anyway you import it
 Angular2HMRLoader.default = Angular2HMRLoader;
 
 module.exports = Angular2HMRLoader
